@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>ssl.server.truststore.location</name>
+        <value>/tmp/hadoop-truststore.jks</value>
+        <description>Truststore to be used by NN and DN. Must be specified.</description>
+    </property>
+    <property>
+        <name>ssl.server.truststore.password</name>
+        <value>truststorepassword</value>
+        <description>Optional. Default value is "".</description>
+    </property>
+
+    <property>
+        <name>ssl.server.keystore.location</name>
+        <value>/tmp/hadoop-self-signed-keystore.jks</value>
+        <description>Keystore to be used by NN and DN. Must be specified.</description>
+    </property>
+    <property>
+        <name>ssl.server.keystore.password</name>
+        <value>keystorepassword</value>
+        <description>Must be specified.</description>
+    </property>
+    <property>
+        <name>ssl.server.keystore.keypassword</name>
+        <value>keypassword</value>
+        <description>Must be specified.</description>
+    </property>
+</configuration>

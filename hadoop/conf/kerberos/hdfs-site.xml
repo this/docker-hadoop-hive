@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+
+    <!-- kerberos -->
+    <property>
+        <name>dfs.namenode.kerberos.principal</name>
+        <value>hadoopuser/hadoop-server@EXAMPLE.COM</value>
+    </property>
+    <property>
+        <name>dfs.namenode.keytab.file</name>
+        <value>/var/keytabs/hadoop.keytab</value>
+    </property>
+    <property>
+        <name>dfs.secondary.namenode.kerberos.principal</name>
+        <value>hadoopuser/hadoop-server@EXAMPLE.COM</value>
+    </property>
+    <property>
+        <name>dfs.secondary.namenode.kerberos.http.principal</name>
+        <value>hadoopuser/hadoop-server@EXAMPLE.COM</value>
+    </property>
+    <property>
+        <name>dfs.secondary.namenode.kerberos.internal.spnego.principal</name>
+        <value>hadoopuser/hadoop-server@EXAMPLE.COM</value>
+    </property>
+    <property>
+        <name>dfs.secondary.namenode.keytab.file</name>
+        <value>/var/keytabs/hadoop.keytab</value>
+    </property>
+    <property>
+        <name>dfs.datanode.kerberos.principal</name>
+        <value>hadoopuser/hadoop-server@EXAMPLE.COM</value>
+    </property>
+    <property>
+        <name>dfs.datanode.keytab.file</name>
+        <value>/var/keytabs/hadoop.keytab</value>
+    </property>
+    <property>
+        <name>dfs.web.authentication.kerberos.principal</name>
+        <value>hadoopuser/hadoop-server@EXAMPLE.COM</value>
+    </property>
+    <property>
+        <name>dfs.web.authentication.kerberos.keytab</name>
+        <value>/var/keytabs/hadoop.keytab</value>
+    </property>
+    <property>
+        <name>dfs.block.access.token.enable</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>dfs.data.transfer.protection</name>
+        <value>authentication</value>
+    </property>
+    <property>
+        <name>dfs.http.policy</name>
+        <value>HTTPS_ONLY</value>
+    </property>
+</configuration>

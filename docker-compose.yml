@@ -1,0 +1,86 @@
+version: "3"
+
+services:
+  hive-metastore-db:
+    image: ${MYSQL_IMAGE}
+    hostname: metastore-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=${SQL_USER}
+      - MYSQL_PASSWORD=${SQL_PASSWORD}
+      - MYSQL_DATABASE=hive_metastore
+    tty: true
+
+  hadoop:
+    build:
+      context: .
+      dockerfile: hadoop/Dockerfile
+      args:
+        JDK_IMAGE: ${JDK_IMAGE}
+        HADOOP_VERSION: ${HADOOP_VERSION}
+        AUTHENTICATION_TYPE: noauth
+    hostname: hadoop-server
+    tty: true
+
+  hive:
+    build:
+      context: .
+      dockerfile: hive/Dockerfile
+      args:
+        JDK_IMAGE: ${JDK_IMAGE}
+        HADOOP_VERSION: ${HADOOP_VERSION}
+        HIVE_VERSION: ${HIVE_VERSION}
+        AUTHENTICATION_TYPE: noauth
+    hostname: hive-server
+    depends_on:
+      - hive-metastore-db
+      - hadoop
+    environment:
+      SERVICE_DEPENDENCIES: "metastore-db:3306 hadoop-server:55555"
+    tty: true
+
+  kerberos:
+    build:
+      context: .
+      dockerfile: kerberos/Dockerfile
+    volumes:
+      - ./kerberos/keytabs:/var/keytabs
+    hostname: kerberos-server
+    tty: true
+
+  kerberized-hadoop:
+    build:
+      context: .
+      dockerfile: hadoop/Dockerfile
+      args:
+        JDK_IMAGE: ${JDK_IMAGE}
+        HADOOP_VERSION: ${HADOOP_VERSION}
+        AUTHENTICATION_TYPE: kerberos
+    volumes:
+      - ./kerberos/keytabs:/var/keytabs
+    hostname: hadoop-server
+    environment:
+      SERVICE_DEPENDENCIES: "kerberos-server:749"
+    depends_on:
+      - kerberos
+    tty: true
+
+  kerberized-hive:
+    build:
+      context: .
+      dockerfile: hive/Dockerfile
+      args:
+        JDK_IMAGE: ${JDK_IMAGE}
+        HADOOP_VERSION: ${HADOOP_VERSION}
+        HIVE_VERSION: ${HIVE_VERSION}
+        AUTHENTICATION_TYPE: kerberos
+    volumes:
+      - ./kerberos/keytabs:/var/keytabs
+    hostname: hive-server
+    depends_on:
+      - hive-metastore-db
+      - kerberos
+      - kerberized-hadoop
+    environment:
+      SERVICE_DEPENDENCIES: "metastore-db:3306 kerberos-server:749 hadoop-server:55555"
+    tty: true

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://hadoop-server:9000</value>
+    </property>
+    <property>
+        <name>hadoop.proxyuser.hiveuser.hosts</name>
+        <value>*</value>
+    </property>
+    <property>
+        <name>hadoop.proxyuser.hiveuser.groups</name>
+        <value>hivetesters</value>
+    </property>
+
+    <!-- kerberos -->
+    <property>
+        <name>hadoop.security.authentication</name>
+        <value>kerberos</value>
+    </property>
+    <property>
+        <name>hadoop.security.authorization</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hadoop.security.auth_to_local</name>
+        <value>
+            DEFAULT
+        </value>
+    </property>
+</configuration>

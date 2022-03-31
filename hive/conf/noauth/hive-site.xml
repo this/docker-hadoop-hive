@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>hive.server2.thrift.bind.host</name>
+        <value>hive-server</value>
+        <description>Bind host on which to run the HiveServer2 Thrift service.</description>
+    </property>
+    <property>
+        <name>hive.metastore.uris</name>
+        <value>thrift://hive-server:9083</value>
+        <description>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.</description>
+    </property>
+    <!-- hive 3.x-->
+    <property>
+        <name>hive.metastore.event.db.notification.api.auth</name>
+        <value>false</value>
+        <description>
+            Should metastore do authorization against database notification related APIs such as get_next_notification.
+            If set to true, then only the superusers in proxy settings have the permission
+        </description>
+    </property>
+    <property>
+        <name>hive.server2.active.passive.ha.enable</name>
+        <value>true</value>
+        <description>Whether HiveServer2 Active/Passive High Availability be enabled when Hive Interactive sessions are enabled.This will also require hive.server2.support.dynamic.service.discovery to be enabled.</description>
+    </property>
+
+    <!-- database -->
+    <property>
+        <name>javax.jdo.option.ConnectionURL</name>
+        <value>jdbc:mysql://metastore-db:3306/hive_metastore</value>
+        <description>the URL of the metastore database</description>
+    </property>
+    <property>
+        <name>javax.jdo.option.ConnectionDriverName</name>
+        <value>com.mysql.cj.jdbc.Driver</value>
+        <description>Driver class name for a JDBC metastore</description>
+    </property>
+    <property>
+        <name>javax.jdo.option.ConnectionUserName</name>
+        <value>sqluser</value>
+        <description>Username to use against metastore database</description>
+    </property>
+    <property>
+        <name>javax.jdo.option.ConnectionPassword</name>
+        <value>sqlpassword</value>
+        <description>password to use against metastore database</description>
+    </property>
+
+    <!-- optional configs -->
+    <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>/user/hive/warehouse</value>
+        <description>location of default database for the warehouse</description>
+    </property>
+    <!-- for JDBC testing -->
+    <property>
+        <name>hive.server2.enable.doAs</name>
+        <value>false</value>
+        <description>
+            Setting this property to true will have HiveServer2 execute
+            Hive operations as the user making the calls to it.
+        </description>
+    </property>
+</configuration>
