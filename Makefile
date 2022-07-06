@@ -1,3 +1,7 @@
+.PHONY: clean
+clean:
+	find kerberos/keytabs -name "*.keytab" -delete
+
 .PHONY: start_hadoop
 start_hadoop:
 	$(MAKE) start-docker-compose-service service=hadoop
