@@ -41,10 +41,19 @@ services:
         HIVE_VERSION: ${HIVE_VERSION}
         AUTHENTICATION_TYPE: noauth
     hostname: hive-server
+    ports:
+      - "9083:9083"
+      - "10000:10000"
+      - "10002:10002"
     depends_on:
       - hive-metastore-db
       - hadoop
+    links:
+      - hadoop:${DOCKER_HOST_HOSTNAME}
     environment:
+      HIVE_CONF_SUBSTITUTE_HDFS_HOST: ${DOCKER_HOST_HOSTNAME}:9000
+      HIVE_CONF_SUBSTITUTE_METASTORE_DB_USER: ${SQL_USER}
+      HIVE_CONF_SUBSTITUTE_METASTORE_DB_PASSWORD: ${SQL_PASSWORD}
       SERVICE_DEPENDENCIES: "metastore-db:3306 hadoop-server:55555"
     tty: true
 

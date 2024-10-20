@@ -39,12 +39,12 @@
     </property>
     <property>
         <name>javax.jdo.option.ConnectionUserName</name>
-        <value>sqluser</value>
+        <value>${env.METASTORE_DB_USER}</value>
         <description>Username to use against metastore database</description>
     </property>
     <property>
         <name>javax.jdo.option.ConnectionPassword</name>
-        <value>sqlpassword</value>
+        <value>${env.METASTORE_DB_PASSWORD}</value>
         <description>password to use against metastore database</description>
     </property>
 
@@ -54,7 +54,7 @@
         <value>/user/hive/warehouse</value>
         <description>location of default database for the warehouse</description>
     </property>
-    <!-- for JDBC testing -->
+    <!-- for JDBC -->
     <property>
         <name>hive.server2.enable.doAs</name>
         <value>false</value>

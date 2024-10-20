@@ -9,6 +9,9 @@ do
   wait-for $service -t 300
 done
 
+# Set envrionment variables that are used in configuration files
+env | grep HIVE_CONF_SUBSTITUTE_ | sed -e 's/HIVE_CONF_SUBSTITUTE_/export /g' >> "$HIVE_CONF_DIR/hive-env.sh"
+
 if [ "$AUTHENTICATION_TYPE" == "kerberos" ]; then
   # Kerberos login-in
   kinit -kt /var/keytabs/hive.keytab "$HIVE_USER/$HOSTNAME@EXAMPLE.COM"
