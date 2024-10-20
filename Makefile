@@ -1,3 +1,5 @@
+DOCKER_HOST_HOSTNAME ?= $(shell hostname)
+
 .PHONY: clean
 clean:
 	find kerberos/keytabs -name "*.keytab" -delete
@@ -25,9 +27,11 @@ start_kerberized_hive:
 .PHONY: start-docker-compose-service
 start-docker-compose-service:
 	$(MAKE) stop-docker-compose-services
+	export DOCKER_HOST_HOSTNAME=$(DOCKER_HOST_HOSTNAME); \
 	docker-compose --env-file .env up --build --remove-orphans --renew-anon-volumes --detach $(service)
 
 
 .PHONY: stop-docker-compose-service
 stop-docker-compose-services:
+	export DOCKER_HOST_HOSTNAME=$(DOCKER_HOST_HOSTNAME); \
 	docker-compose --env-file .env down --remove-orphans --volumes

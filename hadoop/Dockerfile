@@ -4,22 +4,22 @@ FROM $JDK_IMAGE
 # Install necessary dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends sudo openssh-server netcat && \
-    wget -q "https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh" -O /usr/local/bin/wait-for && \
+    wget -nv "https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh" -O /usr/local/bin/wait-for && \
     chmod +x /usr/local/bin/wait-for
 
 # Create users
 ENV HADOOP_USER=hadoopuser
 ENV HIVE_USER=hiveuser
-RUN adduser --gecos "" "$HADOOP_USER" && \
-    adduser "$HADOOP_USER" sudo && echo "$HADOOP_USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
-    addgroup hivetesters && \
-    adduser --gecos "" "$HIVE_USER" && adduser "$HIVE_USER" hivetesters && \
-    adduser --gecos "" jenkins && adduser jenkins hivetesters
+RUN addgroup hadoopgroup && \
+    adduser --gecos "" "$HADOOP_USER" && adduser "$HADOOP_USER" hadoopgroup && \
+    echo "$HADOOP_USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+    addgroup hivegroup && \
+    adduser --gecos "" "$HIVE_USER" && adduser "$HIVE_USER" hivegroup
 USER $HADOOP_USER
 
 # Install Hadoop
 ARG HADOOP_VERSION="3.3.1"
-RUN wget "https://dlcdn.apache.org/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz" -O /tmp/hadoop.tar.gz && \
+RUN wget -nv "https://archive.apache.org/dist/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz" -O /tmp/hadoop.tar.gz && \
     tar -xz -f /tmp/hadoop.tar.gz -C "$HOME/" && \
     rm /tmp/hadoop.tar.gz
 ENV HADOOP_HOME=/home/$HADOOP_USER/hadoop-$HADOOP_VERSION
@@ -33,7 +33,7 @@ ENV HADOOP_COMMON_HOME=$HADOOP_HOME \
     PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 ARG AUTHENTICATION_TYPE=noauth
 COPY hadoop/conf/$AUTHENTICATION_TYPE/ $HADOOP_CONF_DIR/
-RUN echo "export JAVA_HOME=$JAVA_HOME" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+RUN echo "export JAVA_HOME=$JAVA_HOME" >> "$HADOOP_HOME/etc/hadoop/hadoop-env.sh"
 
 # Configure SSH
 RUN ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \
@@ -62,4 +62,4 @@ COPY hadoop/entrypoint.sh /tmp/entrypoint.sh
 RUN sudo chmod +x /tmp/entrypoint.sh
 ENTRYPOINT ["/tmp/entrypoint.sh"]
 
-EXPOSE 9000 9870 9864 55555
+EXPOSE 9000 9870 9864 9866 55555

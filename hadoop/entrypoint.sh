@@ -8,6 +8,9 @@ for service in $SERVICE_DEPENDENCIES; do
   wait-for $service -t 300
 done
 
+# Set environment variables that are used in configuration files
+env | grep HADOOP_CONF_SUBSTITUTE_ | sed -e 's/HADOOP_CONF_SUBSTITUTE_/export /g' > "$HOME/.hadooprc"
+
 if [ "$AUTHENTICATION_TYPE" == "kerberos" ]; then
   # Kerberos login-in
   kinit -kt /var/keytabs/hadoop.keytab "$HADOOP_USER/$HOSTNAME@EXAMPLE.COM"

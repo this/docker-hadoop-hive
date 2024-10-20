@@ -19,7 +19,16 @@ services:
         JDK_IMAGE: ${JDK_IMAGE}
         HADOOP_VERSION: ${HADOOP_VERSION}
         AUTHENTICATION_TYPE: noauth
+    environment:
+      - HADOOP_CONF_SUBSTITUTE_DATANODE_HOSTNAME=${DOCKER_HOST_HOSTNAME}
     hostname: hadoop-server
+    extra_hosts:
+      - "${DOCKER_HOST_HOSTNAME}:host-gateway"
+    ports:
+      - "9000:9000"
+      - "9870:9870"
+      - "9864:9864"
+      - "9866:9866"
     tty: true
 
   hive:
