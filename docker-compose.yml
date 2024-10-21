@@ -40,6 +40,11 @@ services:
         HADOOP_VERSION: ${HADOOP_VERSION}
         HIVE_VERSION: ${HIVE_VERSION}
         AUTHENTICATION_TYPE: noauth
+    environment:
+      HIVE_CONF_SUBSTITUTE_HDFS_HOST: ${DOCKER_HOST_HOSTNAME}:9000
+      HIVE_CONF_SUBSTITUTE_METASTORE_DB_USER: ${SQL_USER}
+      HIVE_CONF_SUBSTITUTE_METASTORE_DB_PASSWORD: ${SQL_PASSWORD}
+      SERVICE_DEPENDENCIES: "metastore-db:3306 hadoop-server:55555"
     hostname: hive-server
     ports:
       - "9083:9083"
@@ -50,11 +55,6 @@ services:
       - hadoop
     links:
       - hadoop:${DOCKER_HOST_HOSTNAME}
-    environment:
-      HIVE_CONF_SUBSTITUTE_HDFS_HOST: ${DOCKER_HOST_HOSTNAME}:9000
-      HIVE_CONF_SUBSTITUTE_METASTORE_DB_USER: ${SQL_USER}
-      HIVE_CONF_SUBSTITUTE_METASTORE_DB_PASSWORD: ${SQL_PASSWORD}
-      SERVICE_DEPENDENCIES: "metastore-db:3306 hadoop-server:55555"
     tty: true
 
   kerberos:
@@ -76,9 +76,9 @@ services:
         AUTHENTICATION_TYPE: kerberos
     volumes:
       - ./kerberos/keytabs:/var/keytabs
-    hostname: hadoop-server
     environment:
       SERVICE_DEPENDENCIES: "kerberos-server:749"
+    hostname: hadoop-server
     depends_on:
       - kerberos
     tty: true
@@ -94,11 +94,11 @@ services:
         AUTHENTICATION_TYPE: kerberos
     volumes:
       - ./kerberos/keytabs:/var/keytabs
+    environment:
+      SERVICE_DEPENDENCIES: "metastore-db:3306 kerberos-server:749 hadoop-server:55555"
     hostname: hive-server
     depends_on:
       - hive-metastore-db
       - kerberos
       - kerberized-hadoop
-    environment:
-      SERVICE_DEPENDENCIES: "metastore-db:3306 kerberos-server:749 hadoop-server:55555"
     tty: true
