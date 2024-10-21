@@ -3,14 +3,14 @@
 <configuration>
     <property>
         <name>hive.server2.thrift.bind.host</name>
-        <value>hive-server</value>
+        <value>localhost</value>
         <description>Bind host on which to run the HiveServer2 Thrift service.</description>
     </property>
 
     <!-- metastore -->
     <property>
         <name>hive.metastore.uris</name>
-        <value>thrift://hive-server:9083</value>
+        <value>thrift://localhost:9083</value>
         <description>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.</description>
     </property>
     <property>
