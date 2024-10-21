@@ -11,7 +11,7 @@
     </property>
     <property>
         <name>hadoop.proxyuser.hiveuser.groups</name>
-        <value>hivetesters</value>
+        <value>hivegroup</value>
     </property>
 
     <!-- kerberos -->
