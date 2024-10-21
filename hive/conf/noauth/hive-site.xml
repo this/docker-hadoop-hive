@@ -6,12 +6,18 @@
         <value>hive-server</value>
         <description>Bind host on which to run the HiveServer2 Thrift service.</description>
     </property>
+
+    <!-- metastore -->
     <property>
         <name>hive.metastore.uris</name>
         <value>thrift://hive-server:9083</value>
         <description>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.</description>
     </property>
-    <!-- hive 3.x-->
+    <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>/user/hive/warehouse</value>
+        <description>location of default database for the warehouse</description>
+    </property>
     <property>
         <name>hive.metastore.event.db.notification.api.auth</name>
         <value>false</value>
@@ -20,13 +26,7 @@
             If set to true, then only the superusers in proxy settings have the permission
         </description>
     </property>
-    <property>
-        <name>hive.server2.active.passive.ha.enable</name>
-        <value>true</value>
-        <description>Whether HiveServer2 Active/Passive High Availability be enabled when Hive Interactive sessions are enabled.This will also require hive.server2.support.dynamic.service.discovery to be enabled.</description>
-    </property>
-
-    <!-- database -->
+    <!-- metastore - database -->
     <property>
         <name>javax.jdo.option.ConnectionURL</name>
         <value>jdbc:mysql://metastore-db:3306/hive_metastore</value>
@@ -48,12 +48,6 @@
         <description>password to use against metastore database</description>
     </property>
 
-    <!-- optional configs -->
-    <property>
-        <name>hive.metastore.warehouse.dir</name>
-        <value>/user/hive/warehouse</value>
-        <description>location of default database for the warehouse</description>
-    </property>
     <!-- for JDBC -->
     <property>
         <name>hive.server2.enable.doAs</name>
