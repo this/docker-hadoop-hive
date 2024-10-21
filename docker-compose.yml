@@ -5,10 +5,10 @@ services:
     image: ${MYSQL_IMAGE}
     hostname: metastore-db
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=${SQL_USER}
-      - MYSQL_PASSWORD=${SQL_PASSWORD}
-      - MYSQL_DATABASE=hive_metastore
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: ${SQL_USER}
+      MYSQL_PASSWORD: ${SQL_PASSWORD}
+      MYSQL_DATABASE: hive_metastore
     tty: true
 
   hadoop:
@@ -20,7 +20,7 @@ services:
         HADOOP_VERSION: ${HADOOP_VERSION}
         AUTHENTICATION_TYPE: noauth
     environment:
-      - HADOOP_CONF_SUBSTITUTE_DATANODE_HOSTNAME=${DOCKER_HOST_HOSTNAME}
+      HADOOP_CONF_SUBSTITUTE_DATANODE_HOSTNAME: ${DOCKER_HOST_HOSTNAME}
     hostname: hadoop-server
     extra_hosts:
       - "${DOCKER_HOST_HOSTNAME}:host-gateway"
