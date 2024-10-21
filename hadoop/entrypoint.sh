@@ -37,9 +37,9 @@ rm -f /tmp/AirlinesTest.csv
 
 # Create Hive directories
 hdfs dfs -mkdir /tmp
-hdfs dfs -chown -R $HIVE_USER /tmp
-hdfs dfs -mkdir -p /user/hive/warehouse
-hdfs dfs -chown -R $HIVE_USER /user/hive
+hdfs dfs -chown -R "$HIVE_USER" /tmp
+hdfs dfs -mkdir -p "/user/$HIVE_USER/warehouse"
+hdfs dfs -chown -R "$HIVE_USER" "/user/$HIVE_USER"
 
 if [ "$AUTHENTICATION_TYPE" == "kerberos" ]; then
   # Destroy Kerberos tickets
